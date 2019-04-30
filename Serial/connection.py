@@ -1,11 +1,14 @@
 import serial
 import multiprocessing as mp
 import datetime
+from settings import sample_2_arduino_data
+import time
+
 
 
 class Connection:
     # variables
-    output_streams = []
+    # output_streams = []
     active_listener = None
 
     def __init__(
@@ -52,7 +55,13 @@ class Connection:
             reads data and sends it to every output stream of this serial connection
             """
             while True:
-                data = self.port.read(size)
+                # Here the blocking TCP socket will wait for a new packet from the server
+                time.sleep(0.1)
+                self.port.write(sample_2_arduino_data)
+
+                data = None
+                while self.port.in_waiting >= 5:# will update until the last packet will be received
+                    data = self.port.read(5)
                 if data:
                     # logging data
                     if log:
@@ -60,12 +69,18 @@ class Connection:
                             f'\033[32;0mSerial\033[0m {self.port.name:^30}',
                             f'\033[32;0mTime\033[0m \033[34;0m{datetime.datetime.now().time()}\033[0m',
                             '\033[32;0m:\033[0m',
-                            data
+                            data.hex()
                         )
 
-                    # sending data to every output stream
-                    for stream in self.output_streams:
-                        stream.send(data)
+                    # # sending data to every output stream
+                    # for stream in self.output_streams:
+                    #     stream.send(data)
+                else:# Arduino didn't send any message
+                    print("No messages from Arduino")
+
+
+
+        self.reset_arduino()
 
         self.active_listener = mp.Process(
             target=listener_process,
@@ -73,3 +88,12 @@ class Connection:
             daemon=False
         )
         self.active_listener.start()
+
+    def reset_arduino(self):
+        # Toggle DTR to reset Arduino
+        self.port.setDTR(False)
+        time.sleep(0.3)
+        # toss any data already received, see
+        # http://pyserial.sourceforge.net/pyserial_api.html#serial.Serial.flushInput
+        self.port.flushInput()
+        self.port.setDTR(True)

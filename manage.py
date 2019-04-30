@@ -27,4 +27,4 @@ serial_connection = ser_con.Connection(
     timeout=settings['serial_timeout']
 )
 
-serial_connection.listener(1)
+serial_connection.start_listener(5)
