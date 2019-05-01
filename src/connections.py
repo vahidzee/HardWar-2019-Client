@@ -86,6 +86,9 @@ class SerialConnection:
 
     def send_data(self, data):
         try:
+            # todo remove
+            print('sending data to serial')
+
             self.port.write(data)
         except Exception as e:
             print(
@@ -96,7 +99,8 @@ class SerialConnection:
     def start_listener(
             self,
             size: int = 5,
-            log: bool = True
+            log: bool = True,
+            debug_message: str = None
     ):
         """
         creates a listener process for this connection
@@ -118,6 +122,10 @@ class SerialConnection:
                     # forwarding received network data to Arduino
                     self.send_data(network_data)
 
+                # sending debug message
+                elif debug_message:
+                    self.send_data(debug_message)
+
                 data = None
                 while self.port.in_waiting >= size:
                     data = self.port.read(size)
@@ -135,10 +143,10 @@ class SerialConnection:
                     self.process_recieved_data(data)
 
         # resetting Arduino before starting listener process
-        print("Signalling Arduino to reset ...")
+        print("Signaling Arduino to reset")
         self.reset_arduino()
 
-        print("Startin Serial Connection Process")
+        print("Starting Serial Connection Process")
         self.active_listener = mp.Process(
             target=listener_process,
             name='listener' + self.port.name,
@@ -154,6 +162,9 @@ class SerialConnection:
         sends reset signal to connected arduino
         """
         # Toggle DTR to reset Arduino
+        # todo remove
+        print("sending reset signal")
+
         self.port.setDTR(False)
 
         # waiting for arduino to boot
@@ -164,6 +175,9 @@ class SerialConnection:
         self.port.setDTR(True)
 
     def process_recieved_data(self, data):
+        # todo remove
+        print("processing received data")
+
         # validating input data
         if data[0] != 0x55 or data[4] != 0xAA:
             return None

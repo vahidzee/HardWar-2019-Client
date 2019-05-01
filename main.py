@@ -12,6 +12,6 @@ if len(sys.argv) >= 2:
         src.methods.debug_arduino()
 
     else:
-        print("\033[31;0mOption is not available\033[0m")
+        print("\033[31;0moption is not available\033[0m")
 else:
     src.methods.bind_serial_and_network()
