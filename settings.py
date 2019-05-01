@@ -4,8 +4,8 @@ serial_baudrate = 9600
 serial_timeout = None
 
 # Network Settings
-server_address = ''
-server_port = ''
+server_address = '192.168.200.83'
+server_port = 6666
 
 # Log settings
 serial_log = False

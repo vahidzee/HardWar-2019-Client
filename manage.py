@@ -22,6 +22,8 @@ settings = load_settings()
 import Serial.connection as ser_con
 
 serial_connection = ser_con.Connection(
+    IP=settings['server_address'],
+    PORT=settings['server_port'],
     serial_port_name=settings['serial_port_name'],
     baudrate=settings['serial_baudrate'],
     timeout=settings['serial_timeout']
