@@ -20,11 +20,19 @@ class Connection:
         """
         opens serial connection to the specified serial_port
         """
-        self.port = serial.Serial(
-            serial_port_name,
-            baudrate=baudrate,
-            timeout=timeout
-        )
+        try:
+            self.port = serial.Serial(
+                serial_port_name,
+                baudrate=baudrate,
+                timeout=timeout
+            )
+        except:
+            print("Error: can't find the Port:",serial_port_name)
+            print("Probable Solution:")
+            print("1. Find the port name by running: python -m serial.tools.list_ports")
+            print("2. Change the port name in the settings.py file")
+            exit()
+
 
     def add_output_stream(self, output_stream):
         pass
@@ -79,7 +87,7 @@ class Connection:
                     print("No messages from Arduino")
 
 
-
+        print("Signal arduino to reset")
         self.reset_arduino()
 
         self.active_listener = mp.Process(
@@ -87,7 +95,11 @@ class Connection:
             name='listener' + self.port.name,
             daemon=False
         )
-        self.active_listener.start()
+        try:
+            self.active_listener.start()
+        except serial.serialutil.SerialException:
+            print("Error, lost the connection of the arduino")
+
 
     def reset_arduino(self):
         # Toggle DTR to reset Arduino
