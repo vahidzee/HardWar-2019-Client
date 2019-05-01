@@ -1,21 +1,15 @@
 # Serial port Settings
-serial_port_name = '/dev/ttyACM0'
+serial_port_name = ''
 serial_baudrate = 9600
 serial_timeout = None
 
 # Network Settings
-server_address = '192.168.200.83'
-server_port = 6666
+server_address = ''
+server_port = -1
 
 # Log settings
-serial_log = False
-network_log = False
-
-# Teams info
-team_id = -1
-team_name = ""
+serial_log = True
+network_log = True
 
 # Arduino debug message
-arduino_debug_message = bytearray(
-    [0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA, 0x55, 0xAA,
-     0x55])
+arduino_debug_message = bytearray([])

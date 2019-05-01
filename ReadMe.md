@@ -1,5 +1,4 @@
 # Hardwar 2019 - Arduino Middleware Client
-
 ## Setup
 Python 3.5 or higher is required
 
@@ -20,6 +19,7 @@ Follow the steps bellow:
 `python manage.py`
 
 ## Settings
+### Serial Port Setup
 First of all you should find the port your Arduino is connected to by looking under 
 `tools > port` in your Arduino sketch application,
 also you can list all serial ports available on your computer by running
@@ -28,3 +28,20 @@ also you can list all serial ports available on your computer by running
 After finding the serial port your device is connected to, 
 enter the port name in `settings.py` as a value of `serial_port_name`,
 you can also change `serial_baudrate` and `serial_timeout` to your desired values.
+
+### Network Address
+Set `server_address` and `server_port` to announced values.
+
+### Log Settings
+If `serial_log` is set to `True`, every Serial output of your Arduino device will be displayed in both two running modes.
+
+If `network_log` is set to `True`, every received data from server will be displayed in both two running modes.
+ 
+## Usage
+### Running options
+There are Two Running Options:
+1. Binding Arduino to the network: `python main.py` which binds your Arduino device to the server specified by `server_address` and `server_port` in settings.
+2. Debugging Arduino's Connection: `python main.py debug_arduino` which sends the byte-array set by `arduino_debug_message` in `settings.py` file.
+
+### Accessing Data From Arduino's Side
+Every data sent to your device is accessible through Arduino's Serial read methods and all your Serial output results will be read by Client Application.

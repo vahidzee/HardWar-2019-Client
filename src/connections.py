@@ -86,9 +86,6 @@ class SerialConnection:
 
     def send_data(self, data):
         try:
-            # todo remove
-            print('sending data to serial')
-
             self.port.write(data)
         except Exception as e:
             print(
@@ -125,6 +122,7 @@ class SerialConnection:
                 # sending debug message
                 elif debug_message:
                     self.send_data(debug_message)
+                    time.sleep(1)
 
                 data = None
                 while self.port.in_waiting >= size:
@@ -162,9 +160,6 @@ class SerialConnection:
         sends reset signal to connected arduino
         """
         # Toggle DTR to reset Arduino
-        # todo remove
-        print("sending reset signal")
-
         self.port.setDTR(False)
 
         # waiting for arduino to boot
@@ -175,9 +170,6 @@ class SerialConnection:
         self.port.setDTR(True)
 
     def process_recieved_data(self, data):
-        # todo remove
-        print("processing received data")
-
         # validating input data
         if data[0] != 0x55 or data[4] != 0xAA:
             return None
