@@ -45,3 +45,9 @@ There are Two Running Options:
 
 ### Accessing Data From Arduino's Side
 Every data sent to your device is accessible through Arduino's Serial read methods and all your Serial output results will be read by Client Application.
+
+
+## Debugging Windows Problems
+* First of all make sure you're typing `py` instead of `python` to run python applications :D !
+* Make sure you're running this project as an administrator (open your command line application as an administrator)
+* If you're still getting errors while opening the serial port, goto your `device manager` and `disable` and `enable` the serial port your device is connected to without pulling it out.
