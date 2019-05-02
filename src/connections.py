@@ -1,6 +1,6 @@
 # general imports
 import serial
-import multiprocessing as mp
+import threading
 import datetime
 import time
 import socket
@@ -93,7 +93,7 @@ class SerialConnection:
             )
             exit()
 
-    def listener_process(self, debug_message, log, size):
+    def listener_thread(self, debug_message, log, size):
         """
         reads data and sends data to received data processor function
         """
@@ -138,15 +138,15 @@ class SerialConnection:
 
         # checking if any active listener process exists
         if self.active_listener:
-            self.active_listener.kill()
+            self.active_listener = None
 
         # resetting Arduino before starting listener process
         print("Signaling Arduino to reset")
         self.reset_arduino()
 
-        print("Starting Serial Connection Process")
-        self.active_listener = mp.Process(
-            target=self.listener_process,
+        print("Starting Serial Connection Thread")
+        self.active_listener = threading.Thread(
+            target=self.listener_thread,
             name='listener' + self.port.name,
             daemon=False,
             args=(debug_message, log, size)
