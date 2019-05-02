@@ -21,7 +21,10 @@ Follow the steps bellow:
 6. Install Project requirements by running:
 `pip install -r requirements.txt`
 
-7. Run Project by running:
+7. Install python serial
+`sudo apt-get install python3-serial`
+
+8. Run Project by running:
 `sudo python3 main.py`
 
 ## Settings
