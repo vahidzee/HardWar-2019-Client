@@ -9,16 +9,19 @@ Follow the steps bellow:
 2. Go to the cloned directory :
 `cd HardWarClient`
 
-3. Create a virtual environment for the project by running : 
+3. Install virtualenv :
+`sudo apt install virtualenv`
+
+4. Create a virtual environment for the project by running : 
 `virtualenv --python=python3 venv`
 
-4. Activate your virtual environment by running:
+5. Activate your virtual environment by running:
 `source venv/bin/activate`
 
-5. Install Project requirements by running:
+6. Install Project requirements by running:
 `pip install -r requirements.txt`
 
-6. Run Project by running:
+7. Run Project by running:
 `sudo python3 main.py`
 
 ## Settings
