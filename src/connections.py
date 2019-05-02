@@ -93,6 +93,39 @@ class SerialConnection:
             )
             exit()
 
+    def listener_process(self, debug_message, log, size):
+        """
+        reads data and sends data to received data processor function
+        """
+        while True:
+            # waiting for network data if available
+            if self.network_connection:
+                network_data = self.network_connection.receive_data()
+
+                # forwarding received network data to Arduino
+                self.send_data(network_data)
+
+            # sending debug message
+            elif debug_message:
+                self.send_data(debug_message)
+                time.sleep(1)
+
+            data = None
+            while self.port.in_waiting >= size:
+                data = self.port.read(size)
+            if data:
+                # logging data
+                if log:
+                    print(
+                        f'\033[32;0mSerial\033[0m {self.port.name:^30}',
+                        f'\033[32;0mTime\033[0m \033[34;0m{datetime.datetime.now().time()}\033[0m',
+                        '\033[32;0m:\033[0m',
+                        data.hex()
+                    )
+
+                # processing received data
+                self.process_recieved_data(data)
+
     def start_listener(
             self,
             size: int = 5,
@@ -107,48 +140,16 @@ class SerialConnection:
         if self.active_listener:
             self.active_listener.kill()
 
-        def listener_process():
-            """
-            reads data and sends data to received data processor function
-            """
-            while True:
-                # waiting for network data if available
-                if self.network_connection:
-                    network_data = self.network_connection.receive_data()
-
-                    # forwarding received network data to Arduino
-                    self.send_data(network_data)
-
-                # sending debug message
-                elif debug_message:
-                    self.send_data(debug_message)
-                    time.sleep(1)
-
-                data = None
-                while self.port.in_waiting >= size:
-                    data = self.port.read(size)
-                if data:
-                    # logging data
-                    if log:
-                        print(
-                            f'\033[32;0mSerial\033[0m {self.port.name:^30}',
-                            f'\033[32;0mTime\033[0m \033[34;0m{datetime.datetime.now().time()}\033[0m',
-                            '\033[32;0m:\033[0m',
-                            data.hex()
-                        )
-
-                    # processing received data
-                    self.process_recieved_data(data)
-
         # resetting Arduino before starting listener process
         print("Signaling Arduino to reset")
         self.reset_arduino()
 
         print("Starting Serial Connection Process")
         self.active_listener = mp.Process(
-            target=listener_process,
+            target=self.listener_process,
             name='listener' + self.port.name,
-            daemon=False
+            daemon=False,
+            args=(debug_message, log, size)
         )
         try:
             self.active_listener.start()
