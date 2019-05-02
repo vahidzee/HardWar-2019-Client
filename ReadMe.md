@@ -6,17 +6,20 @@ Follow the steps bellow:
 1. Clone this repository by running :
 `git clone www.github.com/vahidzee/HardWarClient.git`
 
-2. Create a virtual environment for the project by running : 
+2. Go to the cloned directory :
+`cd HardWarClient`
+
+3. Create a virtual environment for the project by running : 
 `virtualenv --python=python3 venv`
 
-3. Activate your virtual environment by running:
+4. Activate your virtual environment by running:
 `source venv/bin/activate`
 
-4. Install Project requirements by running:
-`pip install -r requirments.txt`
+5. Install Project requirements by running:
+`pip install -r requirements.txt`
 
-5. Run Project by running:
-`python main.py`
+6. Run Project by running:
+`sudo python3 main.py`
 
 ## Settings
 ### Serial Port Setup
