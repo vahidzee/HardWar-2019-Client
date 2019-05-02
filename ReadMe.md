@@ -16,7 +16,7 @@ Follow the steps bellow:
 `pip install -r requirments.txt`
 
 5. Run Project by running:
-`python manage.py`
+`python main.py`
 
 ## Settings
 ### Serial Port Setup
