@@ -1,4 +1,4 @@
-# Hardwar 2019 - Arduino Middleware Client
+# Sharif University of Technology Hardwar 2019 - Arduino Middleware Client
 ## Setup
 Python 3.5 or higher is required
 
